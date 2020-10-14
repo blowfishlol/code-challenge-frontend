@@ -7,14 +7,16 @@ const socket = io("localhost:5000")
 
 function App() {
 
-  const [messageArray, setChatArray] = useState<Message[]>([])
+  const [messageArray, setMessageArray] = useState<Message[]>([])
   const [currentInput, setCurrentInput] = useState<string>("")
 
   useEffect(() =>{
 
-    let handler =  (serverMessage : any) =>{
-      let message = new Message(serverMessage.from, serverMessage.content, new Date(serverMessage.timestamp))
-      appendMessage(message)
+    let handler =  (serverMessages : any[]) =>{
+      console.log("Receive from server:", serverMessages)
+      let messages = serverMessages.map(serverMessage => new Message(serverMessage.from, serverMessage.content, new Date(serverMessage.timestamp)))
+      let nextMessageArray = [...messageArray, ...messages]
+      setMessageArray(nextMessageArray)
     }
 
     socket.on("response" ,handler)
@@ -24,10 +26,6 @@ function App() {
 
   }, [messageArray])
 
-  const appendMessage = (message : Message) => {
-    let nextChatArray = [...messageArray, message]
-    setChatArray(nextChatArray)
-  }
 
   const handleSubmit = (input : string) =>{
     let message = new Message("client", input)
@@ -36,9 +34,12 @@ function App() {
 
   return (
     <div className="App">
-      {messageArray.map((chat, i)=>{
-        return <div key={"chatrow-"+i}>{chat.content}</div>
-      })}
+      <div className="chat-box">
+        {messageArray.map((chat, i)=>{
+          return <div key={"chatrow-"+i}>{chat.content}</div>
+        })}
+      </div>
+
       <input value={currentInput} onChange={(e) =>{setCurrentInput(e.target.value)}}/>
       <button onClick={() => {
         handleSubmit(currentInput)
