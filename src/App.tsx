@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from "./models/Message"
 import ChatCard from "./components/ChatCard";
 
-import {Button, Col, Form} from "react-bootstrap"
+import {Button, Col, Container, Form} from "react-bootstrap"
 
 const socket = io("localhost:5000");
 
@@ -19,7 +19,7 @@ function App() {
       behavior: "smooth",
     })
 
-  }
+  };
 
   useEffect(() =>{
 
@@ -45,15 +45,15 @@ function App() {
 
   return (
     <div style={{alignItems: "center", width:"100%"}}>
-      <div className={"container"} style={{width:"50%", height: "80vh", overflowY:"scroll"}}>
+      <Container style={{width:"50%", height: "80vh", overflowY:"scroll"}}>
         {messageArray.map((chat, i)=>{
-          let pos = chat.from === "client" ? "right" : "left";
-          return <ChatCard key={"card-"+i} message={chat} position={pos}/>
+          let perspective = chat.from === "client" ? "self" : "other";
+          return <ChatCard key={"card-"+i} message={chat} perspective={perspective}/>
         })}
-        <div ref={bottomRef}></div>
-      </div>
-      <div style={{position: "fixed", bottom:0, width:"100%"}}>
-        <Form style={{margin:"auto", width:"50%"}}>
+        <div ref={bottomRef}/>
+      </Container>
+      <div style={{position: "fixed", bottom:0, width:"100%", height:"20vh"}}>
+        <Form style={{margin:"auto", width:"50%", paddingTop:"20px"}}>
           <Form.Row>
             <Col xs={10}>
                 <Form.Control size="lg" type="text" placeholder="Input here" value={currentInput} onChange={(e) =>{setCurrentInput(e.target.value)}}/>
@@ -64,8 +64,10 @@ function App() {
                         type="submit"
                         onClick={(e) => {
                             e.preventDefault();
-                            handleSubmit(currentInput);
-                            setCurrentInput("")}
+                            if(currentInput) {
+                              handleSubmit(currentInput);
+                              setCurrentInput("")}
+                            }
                         }
                 >
                     Submit
