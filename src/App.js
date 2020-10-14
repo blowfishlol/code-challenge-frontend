@@ -8,17 +8,25 @@ const socket = io("localhost:5000")
 function App() {
 
   const [chatArray, setChatArray] = useState([])
-
+  const [currentInput, setCurrentInput] = useState("")
 
   useEffect(() =>{
 
-    socket.on("response" , data =>{
-      console.log(data)
-      setChatArray([...setChatArray, data])
-    })
+    let handler =  data =>{
+      appendMessage(data)
+    }
 
-    return () => socket.disconnect()
-  })
+    socket.on("response" ,handler)
+
+    //so no multiple socket "response" listener exists when useEffect is fired
+    return ()=>{socket.off("response", handler)}
+
+  }, [chatArray])
+
+  const appendMessage = (message) => {
+    let nextChatArray = [...chatArray, message]
+    setChatArray(nextChatArray)
+  }
 
   const handleSubmit = (message) =>{
     socket.emit("message", message)
@@ -26,20 +34,14 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {chatArray.map((chat, i)=>{
+        return <div key={"chatrow-"+i}>{chat}</div>
+      })}
+      <input value={currentInput} onChange={(e) =>{setCurrentInput(e.target.value)}}/>
+      <button onClick={() => {
+        handleSubmit(currentInput)
+        setCurrentInput("")
+      }}>Send</button>
     </div>
   );
 }
