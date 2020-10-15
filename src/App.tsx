@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from "./models/Message"
 import ChatCard from "./components/ChatCard";
 
+import "./App.css"
+
 import {Button, Col, Container, Form} from "react-bootstrap"
 
 const socket = io("localhost:5000");
@@ -44,16 +46,16 @@ function App() {
   };
 
   return (
-    <div style={{alignItems: "center", width:"100%"}}>
-      <Container style={{width:"50%", height: "80vh", overflowY:"scroll"}}>
+    <div className={"page"}>
+      <Container className={"bubble-container"}>
         {messageArray.map((chat, i)=>{
           let perspective = chat.from === "client" ? "self" : "other";
           return <ChatCard key={"card-"+i} message={chat} perspective={perspective}/>
         })}
         <div ref={bottomRef}/>
       </Container>
-      <div style={{position: "fixed", bottom:0, width:"100%", height:"20vh"}}>
-        <Form style={{margin:"auto", width:"50%", paddingTop:"20px"}}>
+      <div className={"bottom-sticky"}>
+        <Form className={"interactive-container"}>
           <Form.Row>
             <Col xs={10}>
               <Form.Control
@@ -68,6 +70,7 @@ function App() {
               <Button variant="primary"
                       aria-label="submit-button"
                       size="lg"
+                      style={{width:"100%"}}
                       type="submit"
                       onClick={(e) => {
                         e.preventDefault();

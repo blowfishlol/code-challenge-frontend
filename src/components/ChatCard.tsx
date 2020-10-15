@@ -14,7 +14,7 @@ function ChatCard({message, perspective}: ChatCardProps) {
     let color = perspective === "self" ? "#dcf8c6" : "#ece5dd"
     return (<Row>
         <Col md={12}>
-            <Card className={classNames.card} style={{maxWidth: "50%", backgroundColor: color}}>
+            <Card className={classNames.card} style={{maxWidth: "50%", backgroundColor: color, marginTop:"25px"}}>
                 <Card.Header className={classNames.text}>{message.from}</Card.Header>
                 <Card.Body>
                     <Card.Text>
