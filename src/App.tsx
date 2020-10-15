@@ -56,22 +56,28 @@ function App() {
         <Form style={{margin:"auto", width:"50%", paddingTop:"20px"}}>
           <Form.Row>
             <Col xs={10}>
-                <Form.Control size="lg" type="text" placeholder="Input here" value={currentInput} onChange={(e) =>{setCurrentInput(e.target.value)}}/>
+              <Form.Control
+                aria-label="chat-input"
+                size="lg"
+                type="text"
+                placeholder="Input here"
+                value={currentInput}
+                onChange={(e) =>{setCurrentInput(e.target.value)}}/>
             </Col>
             <Col xs={2}>
-                <Button variant="primary"
-                        size="lg"
-                        type="submit"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if(currentInput) {
-                              handleSubmit(currentInput);
-                              setCurrentInput("")}
-                            }
-                        }
-                >
-                    Submit
-                </Button>
+              <Button variant="primary"
+                      aria-label="submit-button"
+                      size="lg"
+                      type="submit"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if(currentInput) {
+                          handleSubmit(currentInput);
+                          setCurrentInput("")}}
+                      }
+              >
+                Submit
+              </Button>
             </Col>
           </Form.Row>
 
