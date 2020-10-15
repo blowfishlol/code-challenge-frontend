@@ -1,6 +1,15 @@
 import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react'
 import App from './App';
+import io from "socket.io-client"
+
+jest.mock('socket.io-client', () =>{
+  const emit = jest.fn()
+  const on = jest.fn()
+  const off = jest.fn()
+  const socket = {emit, on, off}
+  return jest.fn(() => socket)
+})
 
 test('renders text field and submit button', () => {
   const { getByText } = render(<App />);
@@ -39,7 +48,6 @@ test('card should appear when submit is clicked when the input have value', asyn
 
 test('card should not appear when submit is clicked when the input dont have value', async () => {
   const app = render(<App/>)
-  let input = app.getByLabelText(/chat-input/i)
   let button = app.getByLabelText(/submit-button/i)
 
   fireEvent.click(button, {button: 0})
@@ -48,3 +56,33 @@ test('card should not appear when submit is clicked when the input dont have val
 
   expect(card).toBeNull();
 });
+
+test('chat input and button should be disabled when not connected', () =>{
+  const app = render(<App/>)
+  let input = app.getByLabelText(/chat-input/i)
+  let button = app.getByLabelText(/submit-button/i)
+
+  expect(input).toHaveAttribute("disabled");
+  expect(button).toHaveAttribute("disabled");
+})
+
+test('chat input and button should be enabled when connected', () =>{
+
+  beforeEach(() =>{
+    io.mockClear()
+    io().on.mockClear()
+    io().emit.mockClear()
+  })
+
+  afterEach(() =>{
+    jest.restoreAllMocks()
+  })
+  //expect(io.connect).toHaveBeenCalled()
+
+  const app = render(<App/>)
+  let input = app.getByLabelText(/chat-input/i)
+  let button = app.getByLabelText(/submit-button/i)
+
+  expect(input.getAttribute("disabled")).toBe("")
+  expect(button.getAttribute("disabled")).toBe("")
+})
