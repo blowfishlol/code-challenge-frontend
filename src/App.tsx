@@ -13,7 +13,7 @@ function App() {
 
   const [messageArray, setMessageArray] = useState<Message[]>([]);
   const [currentInput, setCurrentInput] = useState<string>("");
-  const [isConnected, setIsConnected] = useState<boolean>(false)
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const scrollToChatBottom = () => {
@@ -40,21 +40,21 @@ function App() {
 
   useEffect(()=>{
     let onConnect = () =>{
-      setIsConnected(true)
-    }
-    socket.on('connect', onConnect)
+      setIsConnected(true);
+    };
+    socket.on('connect', onConnect);
 
     let onDisconnect = ()=>{
       setIsConnected(false)
-    }
-    socket.on('disconnect', onDisconnect)
+    };
+    socket.on('disconnect', onDisconnect);
 
     return () => {
-      socket.off('connect', onConnect)
-      socket.off('disconnect', onDisconnect)
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
     }
 
-  }, [isConnected])
+  }, [isConnected]);
 
   const handleSubmit = (input : string) =>{
     let message = new Message("client", input);

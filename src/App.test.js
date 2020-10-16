@@ -7,7 +7,7 @@ jest.mock('socket.io-client', () =>{
   const on = jest.fn();
   const off = jest.fn();
   const socket = {emit, on, off};
-  return jest.fn(() => socket)
+  return jest.fn(() => socket);
 });
 
 describe('Test features when offline', () =>{
@@ -19,7 +19,7 @@ describe('Test features when offline', () =>{
 
 
   test('able to type to the chat text field', async () => {
-    const app = render(<App/>)
+    const app = render(<App/>);
     let input = app.getByLabelText(/chat-input/i);
 
     fireEvent.change(input, {
@@ -29,7 +29,7 @@ describe('Test features when offline', () =>{
   });
 
   test('chat input and button should be disabled', () =>{
-    const app = render(<App/>)
+    const app = render(<App/>);
     let input = app.getByLabelText(/chat-input/i);
     let button = app.getByLabelText(/submit-button/i);
 
@@ -39,7 +39,7 @@ describe('Test features when offline', () =>{
 
 
   test('card should not appear when submit is clicked', async () => {
-    const app = render(<App/>)
+    const app = render(<App/>);
     let button = app.getByLabelText(/submit-button/i);
 
     fireEvent.click(button, {button: 0});
