@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import values from "./values";
 import io from "socket.io-client"
-import "./App.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css"
 import Message from "./models/Message"
 import ChatCard from "./components/ChatCard";
 import {Button, Col, Container, Form} from "react-bootstrap"
