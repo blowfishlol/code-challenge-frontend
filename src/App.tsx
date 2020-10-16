@@ -1,15 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
+import values from "./values";
 import io from "socket.io-client"
+import "./App.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Message from "./models/Message"
 import ChatCard from "./components/ChatCard";
-
-import "./App.css"
-
 import {Button, Col, Container, Form} from "react-bootstrap"
-let uri = process.env.NODE_ENV === "test"? "": "localhost:5000"
-const socket = io(uri);
+
+const socket = io(values.uri);
 
 function App() {
 

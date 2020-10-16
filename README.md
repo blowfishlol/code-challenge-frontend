@@ -5,7 +5,7 @@ to the [server](https://github.com/blowfishlol/code-challenge-backend).
 
 ## Possible Messages
 ### Mathematical expression
-When the user sends a valid mathematical expression and the server should calculate it. 
+When the user sends a valid mathematical expression, the server should calculate it. 
 The possible operators are:
 - \+ Addition
 - \- Substraction
